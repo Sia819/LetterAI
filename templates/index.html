@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GPT with Flask</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        #logo-text {
+            color: black;
+            font-size: 30px;
+            line-height: 50px;
+            font-weight: 500;
+            text-align: center;
+            margin-left: 12px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            line-height: 60px; /* Vertically center the text there */
+            background-color: #f5f5f5;
+        }       
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="/static/images/LetterAI-Logo_100px.png" width="50" height="50" class="d-inline-block align-top" alt="">
+            <span id="logo-text">LetterAI</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" id="home-menu" href="#">Home</a>
+                <a class="nav-item nav-link" id="info-menu" href="#">Info</a>
+                <a class="nav-item nav-link" id="settings-menu" href="#">Settings</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4" id="content-area">
+        <!-- Content goes here -->
+    </div>
+    <footer class="footer fixed-bottom bg-light">
+        <div class="container text-center">
+          <span class="text-muted">&copy; 2023 LetterAI. All rights reserved.</span>
+        </div>
+    </footer>
+    <script>
+        $(document).ready(function() {
+            $('.nav-link').on('click', function(e) {
+                e.preventDefault();
+                var id = $(this).attr('id');
+        
+                // Send AJAX request to the server to get the page content
+                $.ajax({
+                    url: '/api/get_page_content',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'page_id': id
+                    }),
+                    success: function(response) {
+                        // Replace the content area with the new content
+                        $('#content-area').html(response.content);
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+        </script>
+</body>
+</html>

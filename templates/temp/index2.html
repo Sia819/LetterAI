@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GPT with Flask</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>GPT with Flask</h1>
+    <form id="message-form">
+        <textarea id="message-input" placeholder="Enter your message" rows="4" cols="50"></textarea>
+        <br>
+        <input id="api-key-input" type="text" placeholder="Enter your API key">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+    <p id="response"></p>
+
+    <script>
+    $(document).ready(function() {
+        $('#message-form').on('submit', function(e) {
+            e.preventDefault();
+
+            var message = $('#message-input').val();
+            var apiKey = $('#api-key-input').val();
+
+            $.ajax({
+                url: '/api/gpt',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'message': message,
+                    'api_key': apiKey
+                }),
+                success: function(response) {
+                    $('#response').text('Response: ' + response.message);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
