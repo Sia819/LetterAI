@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html>
-<!--widthout flask debug-->
-<!--
 <head>
-    <meta charset="utf-8">
-    <title>GPT with Flask</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
 </head>
--->
 <body>
-    <div class="container">
-        <h1 class="mt-5">GPT with Flask</h1>
-        <form id="message-form" class="mt-5">
-            <div class="form-group">
-                <label for="api-key-input">API Key:</label>
-                <input type="password" class="form-control" id="api-key-input" placeholder="OpenAI에서 발급받은 API 키를 여기에 붙혀 넣으세요!">
-            </div>
-    
-            <div class="form-group row">
-                <div class="col">
-                    <label for="message-input">Message:</label>
-                    <textarea class="form-control" id="message-input" rows="20" placeholder="상사에게&#13;&#10;감기에 걸려 못감&#13;&#10;죄송하다."></textarea>
-                    <div class="text-right mt-2"> <!-- text-right 클래스를 추가 -->
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-4 col-md-3 col-lg-2 p-0 bg-light" id="chat-list-container">
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-primary m-2 pl-5 pr-5" id="new-chat-button">New Chat</button>
                 </div>
-                <div class="d-flex">
-                    <div class="border mt-3 mb-5 ml-2 mr-2"></div>
-                </div>
-                <div class="col">
-                    <label for="result-output">Result:</label>
-                    <textarea class="form-control" id="result-output" rows="20" style="background-color: #fcfcfc;" readonly></textarea>
-                    <div class="text-right mt-2"> <!-- text-right 클래스를 추가 -->
-                        <button class="btn btn-secondary">Regenerate</button>
-                    </div>
+                <div class="d-flex flex-column align-items-start py-3 px-4" id="chat-list">
+                    <!-- Chat items will be dynamically appended here. -->
+                    
                 </div>
             </div>
-        </form>
+            <div class="col ml-5 mr-5">
+                <h1 class="mt-5">GPT with Flask</h1>
+                <form id="message-form" class="mt-5">
+                    <div class="form-group">
+                        <label for="api-key-input">API Key:</label>
+                        <input type="password" class="form-control" id="api-key-input" placeholder="OpenAI에서 발급받은 API 키를 여기에 붙혀 넣으세요!">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-input">Message:</label>
+                        <textarea class="form-control" id="message-input" rows="10" placeholder="상사에게&#13;&#10;감기에 걸려 못감&#13;&#10;죄송하다." style="resize: vertical;"></textarea>
+                        <div class="text-right mt-2">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-secondary" id="save-debug-button">Save for Debug</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="result-output">Result:</label>
+                        <textarea class="form-control" id="result-output" rows="10" style="background-color: #fcfcfc; resize: vertical;" readonly></textarea>
+                        <div class="text-right mt-2">
+                            <button class="btn btn-secondary">Regenerate</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
     $(document).ready(function() {
+        // Load chat history from cookies
+        loadChatHistory();
+
         $('#message-form').on('submit', function(e) {
             e.preventDefault();
 
@@ -58,14 +66,64 @@
                     'api_key': apiKey
                 }),
                 success: function(response) {
-                    $('#result-output').text(response.message);
+                    var result = response.message;
+                    $('#result-output').val(result);
+
+                    // Append chat item
+                    appendChatItem(message, result);
+
+                    // Save chat history to cookies
+                    saveChatHistory(message, result);
                 },
                 error: function(error) {
                     console.error(error);
                 }
             });
         });
+
+        $('#new-chat-button').click(function() {
+            $('#message-input').val('');
+            $('#result-output').val('');
+        });
+
+        $('#save-debug-button').click(function() {
+            var message = $('#message-input').val();
+            var result = $('#result-output').val();
+
+            // Append chat item
+            appendChatItem(message, result);
+
+            // Save chat history to cookies
+            saveChatHistory(message, result);
+        });
+
+        $('#chat-list').on('click', 'button.list-group-item', function() {
+            $('#message-input').val($(this).data('message'));
+            $('#result-output').val($(this).data('response'));
+        });
     });
+
+    function appendChatItem(message, response) {
+        var deleteButton = $('<button>').text('Delete').click(function() {
+            $(this).parent().remove();
+            // Optionally, you can also remove this chat item from cookies here.
+        });
+
+        var chatItem = $('<div>').addClass('list-group-item list-group-item-action mb-2')
+                                 .append(deleteButton)
+                                 .append("User: " + message + "\nAI: " + response)
+                                 .data({'message': message, 'response': response});
+
+        $('#chat-list').prepend(chatItem);
+    }
+
+    function saveChatHistory(message, response) {
+        // Code for saving chat history to cookies goes here.
+    }
+
+    function loadChatHistory() {
+        // Code for loading chat history from cookies and appending chat items goes here.
+    }
     </script>
 </body>
 </html>
