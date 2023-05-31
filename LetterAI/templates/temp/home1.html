@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
-<!--widthout flask debug-->
-<!--
 <head>
     <meta charset="utf-8">
     <title>GPT with Flask</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>i{
+        position: absolute;
+        left: 75%;
+        top: 27px;
+        color: orange;
+    }
+</style>
 </head>
--->
+
 <body>
     <div class="container">
         <h1 class="mt-5">GPT with Flask</h1>
@@ -40,6 +45,7 @@
             </div>
         </form>
     </div>
+    
 
     <script>
     $(document).ready(function() {
@@ -58,7 +64,7 @@
                     'api_key': apiKey
                 }),
                 success: function(response) {
-                    $('#result-output').text(response.message);
+                    $('#result-output').text('Response: ' + response.message);
                 },
                 error: function(error) {
                     console.error(error);

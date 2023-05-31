@@ -15,6 +15,15 @@
             text-align: center;
             margin-left: 12px;
         }
+        #content-area {
+            padding-bottom: 120px; /* 바텀 푸터 만큼의 패딩을 지정 */
+        }
+        body {
+            background-color: white;
+        }
+        .navbar {
+            background-color: #ddd;
+        }
         .footer {
             position: fixed;
             bottom: 0;
@@ -22,12 +31,12 @@
             /* Set the fixed height of the footer here */
             height: 60px;
             line-height: 60px; /* Vertically center the text there */
-            background-color: #f5f5f5;
+            background-color: #eee;
         }       
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
         <a class="navbar-brand" href="#">
             <img src="/static/images/LetterAI-Logo_100px.png" width="50" height="50" class="d-inline-block align-top" alt="">
             <span id="logo-text">LetterAI</span>
@@ -37,44 +46,61 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" id="home-menu" href="#">Home</a>
+                <a class="nav-item nav-link font-weight-bold active" id="home-menu" href="#">Home</a>
                 <a class="nav-item nav-link" id="info-menu" href="#">Info</a>
                 <a class="nav-item nav-link" id="settings-menu" href="#">Settings</a>
             </div>
         </div>
     </nav>
-    <div class="container mt-4" id="content-area">
-        <!-- Content goes here -->
+    
+    <div id="content-area">
+        <div class="container mt-4" id="content-page">
+            <!-- AJAX 컨텐츠가 여기에 표시됩니다 -->
+        </div>
     </div>
-    <footer class="footer fixed-bottom bg-light">
+    
+    <footer class="footer fixed-bottom">
         <div class="container text-center">
           <span class="text-muted">&copy; 2023 LetterAI. All rights reserved.</span>
         </div>
     </footer>
     <script>
         $(document).ready(function() {
-            $('.nav-link').on('click', function(e) {
+            // 기본 페이지를 로드합니다.
+            loadPage('home-menu');
+                
+            // 상단바 페이지 이동 클릭 이벤트를 동적으로 처리합니다.
+            $('body').on('click', '.nav-link', function(e) {
                 e.preventDefault();
                 var id = $(this).attr('id');
-        
-                // Send AJAX request to the server to get the page content
-                $.ajax({
-                    url: '/api/get_page_content',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        'page_id': id
-                    }),
-                    success: function(response) {
-                        // Replace the content area with the new content
-                        $('#content-area').html(response.content);
-                    },
-                    error: function(error) {
-                        console.error(error);
-                    }
-                });
+                loadPage(id);
+                
+                // 선택된 페이지를 강조하기 위해 부트스트랩 상태를 업데이트 합니다.
+                $('.nav-link').removeClass('font-weight-bold');
+                $('.nav-link').removeClass('active');
+                $(this).addClass('font-weight-bold');
+                $(this).addClass('active');
             });
         });
+        
+        function loadPage(id) {
+            // 페이지 콘텐츠를 얻기 위해 서버에 AJAX 요청을 보냅니다.
+            $.ajax({
+                url: '/api/get_page_content',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'page_id': id
+                }),
+                success: function(response) {
+                    // 콘텐츠 영역을 새 콘텐츠로 교체
+                    $('#content-area').html(response.content);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        }
         </script>
-</body>
+    </body>
 </html>

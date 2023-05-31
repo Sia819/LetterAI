@@ -38,10 +38,17 @@ def generate_text():
         response = openai.ChatCompletion.create(
           model="gpt-3.5-turbo",
           messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": data['message']}
+                {
+                    "role": "system", 
+                    "content": "당신은 프로페셔널 편지 작성자입니다. 제가 상황을 제시하겠습니다. 당신은 해당 상황에 알맞은 정중하고 적절한 편지를 작성해야 합니다. 이 편지는 주어진 상황에 대한 이해와 배려를 반영하며, 적절한 어조와 맞춤법,  너무 정중하지 않고, 내용을 이해하기 쉽고 간결하게 100 ~ 500글자 수의 문장 구조를 사용해야 합니다."
+                },
+                {
+                    "role": "user", 
+                    "content": data['message']
+                }
             ]
         )
+        app.logger.debug(jsonify({'message': response['choices'][0]['message']['content']}))
     except Exception as e:
         app.logger.error(f'Exception occurred: {e}')
         return jsonify({'error': str(e)}), 500

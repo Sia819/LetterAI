@@ -1,1 +1,138 @@
-hello setting
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            img {
+                max-width: 400px; /* 원하는 최대 너비 설정 */
+                height: auto; /* 이미지 비율 유지 */
+            }
+            h3 {
+                background-color: rgb(156, 190, 156);
+                color: white;
+                padding: 10px;
+            }
+            .gray-p {
+                color: gray;
+            }
+            .gray-background {
+                background-color: rgba(148, 147, 147, 0.403);
+            }
+            a {
+                color: green;
+            }
+            figure {
+                display: inline-block;
+                vertical-align: top;
+                margin-right: 20px; /* 이미지 사이에 간격을 주기 위해 조정 가능 */
+            }
+            .image-container {
+                border: 4px solid rgba(100, 146, 100, 0.695);
+                padding: 10px;
+                display: inline-block;
+            }
+            
+            .image-container figure {
+                margin: 0;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="container">
+            <p class="gray-p">LetterAI는 웹 인터페이스를 통해 OpenAI API를 더 쉽게 사용할 수 있도록 만든 도구입니다. 
+                <br>그러나 OpenAI API에 대한 비용은 별도로 청구되므로 사용자는 개인의 API 키를 입력해야 합니다.
+                <br>OpenAI에서 결재방법(신용카드)을 등록해야지만 OpenAI의 키를 사용할 수 있습니다.
+                <br>자세한 설명은 아래 문서를 참조해주세요.</p>
+                <hr>
+            <h3>API keys 발급</h3>
+            <ul>
+                <li>
+                    <p><a href="https://platform.openai.com/account/api-keys">API-Key 생성 바로가기 ▷</a>OpenAI</p>
+                </li>
+                <li>
+                    <p>OpenAI 링크에 접속하여 로그인/회원가입을 진행합니다.</p>
+                </li>
+            </ul>
+            
+            <div class="image-container">
+                <figure>
+                    <figcaption>[OpenAI 링크 접속 화면]</figcaption>
+                    <img src="/static/images/Setting-Login-Link.png">
+                </figure>
+                
+                <figure>
+                    <figcaption>[로그인 화면]</figcaption>
+                    <img src="/static/images/Setting-Login.png">
+                </figure>
+            </div>
+            <br><br><br><br> <hr>
+            <br><br>
+            <ul>
+                <li>
+                    <p>API Keys 생성 화면에서 <span class="gray-background">+Create new secret key</span> 버튼을 클릭합니다.</p>
+                </li>
+                <li>
+                    <p>진행하려는 프로젝트 또는 원하는 API 제목을 작성합니다.</p>
+                </li>
+                <li>
+                    <p>발급된 Key를 확인하고, 이때 보안을 위해 본인 Key값을 따로 저장해두는 것을 추천합니다.</p>
+                </li>
+            </ul>
+            <div class="image-container">
+                <figure>
+                    <figcaption>[API Key 발급화면]</figcaption>
+                    <img src="/static/images/Setting-API_1.png">
+                </figure>
+                
+                <figure>
+                    <figcaption>[API 이름 입력 화면]</figcaption>
+                    <img src="/static/images/Setting-WantAPI.png">
+                    
+                </figure>
+                
+                <figure>
+                    <figcaption>[API Key 생성 후 화면]</figcaption>
+                    <img src="/static/images/Setting-Register.png">
+                </figure>
+            </div>
+            <br><br><br><br> <hr>
+            <br><br>
+    
+            <h3>결제 수단(신용카드)등록</h3>
+            
+            <ul>
+                <li>
+                    <p>오른쪽 상단의 메뉴바에서 "Billing"->"Overview 화면을 선택합니다.</p>
+                </li>
+                <li>
+                    <p><span class="gray-background">"Set up paid account"</span>를 선택하고 개인 또는 회사의 지불 방법을 선택합니다.</p>
+                </li>
+                <li>
+                    <p>이후, 본인의 카드번호와 주소 등 정보를 입력합니다.</p>
+                </li>
+                <li>
+                    <p>결제 수단을 등록하고 나면 API Key가 사용가능합니다.</p>
+                </li>
+            </ul>
+            
+            <div class="image-container">
+                <figure>
+                    <figcaption>Setting Payment Register</figcaption>
+                    <img src="/static/images/Setting-Payment-overview.png">
+                </figure>
+                
+                <figure>
+                    <figcaption>Setting Payment Register</figcaption>
+                    <img src="/static/images/Setting-Payment-mathod.png">
+                </figure>
+                
+                <figure>
+                    <figcaption>Setting Payment Register</figcaption>
+                    <img src="/static/images/Setting-Payment-register.png"> 
+                </figure>
+            </div>
+            
+        </div>
+    </body>
+</html>
