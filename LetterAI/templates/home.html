@@ -104,16 +104,19 @@
     });
 
     function appendChatItem(message, response) {
-        var deleteButton = $('<button>').text('Delete').click(function() {
+        var deleteButton = $('<button>').text('Delete').click(function(e) {
+            e.stopPropagation();
             $(this).parent().remove();
             // Optionally, you can also remove this chat item from cookies here.
         });
-
-        var chatItem = $('<div>').addClass('list-group-item list-group-item-action mb-2')
-                                 .append(deleteButton)
-                                 .append("User: " + message + "\nAI: " + response)
-                                 .data({'message': message, 'response': response});
-
+    
+        var chatItemButton = $('<button>').addClass('list-group-item list-group-item-action mb-2')
+                                          .text("User: " + message + "\nAI: " + response)
+                                          .data({'message': message, 'response': response});
+        
+        var chatItem = $('<div>').append(deleteButton)
+                                 .append(chatItemButton);
+        
         $('#chat-list').prepend(chatItem);
     }
 
