@@ -87,14 +87,15 @@
         });
 
         $('#save-debug-button').click(function() {
+            var id = new Date().getTime().toString();
             var message = $('#message-input').val();
             var result = $('#result-output').val();
 
             // Append chat item
-            appendChatItem(message, result);
+            appendChatItem(id, message, result);
 
             // Save chat history to cookies
-            saveChatHistory(message, result);
+            saveChatHistory(id, message, result);
         });
 
         $('#chat-list').on('click', 'button.list-group-item', function() {
@@ -103,24 +104,27 @@
         });
     });
 
-    function appendChatItem(message, response) {
+    function appendChatItem(id, message, response) {
         var deleteButton = $('<button>').text('Delete').click(function(e) {
             e.stopPropagation();
             $(this).parent().remove();
-            // Optionally, you can also remove this chat item from cookies here.
+
+            // Remove this chat item from cookies
+            removeChatHistory(id);
         });
 
         var chatItemButton = $('<button>').addClass('list-group-item list-group-item-action mb-2')
                                           .text("User: " + message + "\nAI: " + response)
-                                          .data({'message': message, 'response': response});
+                                          .data({'id': id, 'message': message, 'response': response});
 
-        var chatItem = $('<div>').append(deleteButton)
+        var chatItem = $('<div>').data('id', id)
+                                 .append(deleteButton)
                                  .append(chatItemButton);
 
         $('#chat-list').prepend(chatItem);
     }
 
-    function saveChatHistory(message, response) {
+    function saveChatHistory(id, message, response) {
         var chatHistory = [];
         var chatHistoryCookie = document.cookie.replace(/(?:(?:^|.*;\s*)chatHistory\s*=\s*([^;]*).*$)|^.*$/, "$1");
 
@@ -129,8 +133,24 @@
         }
 
         chatHistory.push({
+            'id': id,
             'message': message,
             'response': response
+        });
+
+        document.cookie = "chatHistory=" + JSON.stringify(chatHistory);
+    }
+
+    function removeChatHistory(id) {
+        var chatHistory = [];
+        var chatHistoryCookie = document.cookie.replace(/(?:(?:^|.*;\s*)chatHistory\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+        if (chatHistoryCookie) {
+            chatHistory = JSON.parse(chatHistoryCookie);
+        }
+
+        chatHistory = chatHistory.filter(function(item) {
+            return item.id !== id;
         });
 
         document.cookie = "chatHistory=" + JSON.stringify(chatHistory);
@@ -145,7 +165,7 @@
         }
 
         for (var i = 0; i < chatHistory.length; i++) {
-            appendChatItem(chatHistory[i].message, chatHistory[i].response);
+            appendChatItem(chatHistory[i].id, chatHistory[i].message, chatHistory[i].response);
         }
     }
     </script>
