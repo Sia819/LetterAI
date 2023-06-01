@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>GPT with Flask</title>
@@ -15,33 +16,42 @@
             text-align: center;
             margin-left: 12px;
         }
+
         #content-area {
-            padding-bottom: 120px; /* 바텀 푸터 만큼의 패딩을 지정 */
+            padding-bottom: 120px;
+            /* 바텀 푸터 만큼의 패딩을 지정 */
         }
+
         body {
             background-color: white;
         }
+
         .navbar {
             background-color: #ddd;
         }
+
         .footer {
             position: fixed;
             bottom: 0;
             width: 100%;
             /* Set the fixed height of the footer here */
             height: 60px;
-            line-height: 60px; /* Vertically center the text there */
+            line-height: 60px;
+            /* Vertically center the text there */
             background-color: #eee;
-        }       
+        }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <a class="navbar-brand" href="#">
-            <img src="/static/images/LetterAI-Logo_100px.png" width="50" height="50" class="d-inline-block align-top" alt="">
+            <img src="/static/images/LetterAI-Logo_100px.png" width="50" height="50" class="d-inline-block align-top"
+                alt="">
             <span id="logo-text">LetterAI</span>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -52,29 +62,29 @@
             </div>
         </div>
     </nav>
-    
+
     <div id="content-area">
         <div class="container mt-4" id="content-page">
             <!-- AJAX 컨텐츠가 여기에 표시됩니다 -->
         </div>
     </div>
-    
+
     <footer class="footer fixed-bottom">
         <div class="container text-center">
-          <span class="text-muted">&copy; 2023 LetterAI. All rights reserved.</span>
+            <span class="text-muted">&copy; 2023 LetterAI. All rights reserved.</span>
         </div>
     </footer>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // 기본 페이지를 로드합니다.
             loadPage('home-menu');
-                
+
             // 상단바 페이지 이동 클릭 이벤트를 동적으로 처리합니다.
-            $('body').on('click', '.nav-link', function(e) {
+            $('body').on('click', '.nav-link', function (e) {
                 e.preventDefault();
                 var id = $(this).attr('id');
                 loadPage(id);
-                
+
                 // 선택된 페이지를 강조하기 위해 부트스트랩 상태를 업데이트 합니다.
                 $('.nav-link').removeClass('font-weight-bold');
                 $('.nav-link').removeClass('active');
@@ -82,7 +92,7 @@
                 $(this).addClass('active');
             });
         });
-        
+
         function loadPage(id) {
             // 페이지 콘텐츠를 얻기 위해 서버에 AJAX 요청을 보냅니다.
             $.ajax({
@@ -92,15 +102,16 @@
                 data: JSON.stringify({
                     'page_id': id
                 }),
-                success: function(response) {
+                success: function (response) {
                     // 콘텐츠 영역을 새 콘텐츠로 교체
                     $('#content-area').html(response.content);
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error(error);
                 }
             });
         }
-        </script>
-    </body>
+    </script>
+</body>
+
 </html>
