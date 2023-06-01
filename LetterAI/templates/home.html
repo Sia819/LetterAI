@@ -109,23 +109,44 @@
             $(this).parent().remove();
             // Optionally, you can also remove this chat item from cookies here.
         });
-    
+
         var chatItemButton = $('<button>').addClass('list-group-item list-group-item-action mb-2')
                                           .text("User: " + message + "\nAI: " + response)
                                           .data({'message': message, 'response': response});
-        
+
         var chatItem = $('<div>').append(deleteButton)
                                  .append(chatItemButton);
-        
+
         $('#chat-list').prepend(chatItem);
     }
 
     function saveChatHistory(message, response) {
-        // Code for saving chat history to cookies goes here.
+        var chatHistory = [];
+        var chatHistoryCookie = document.cookie.replace(/(?:(?:^|.*;\s*)chatHistory\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+        if (chatHistoryCookie) {
+            chatHistory = JSON.parse(chatHistoryCookie);
+        }
+
+        chatHistory.push({
+            'message': message,
+            'response': response
+        });
+
+        document.cookie = "chatHistory=" + JSON.stringify(chatHistory);
     }
 
     function loadChatHistory() {
-        // Code for loading chat history from cookies and appending chat items goes here.
+        var chatHistory = [];
+        var chatHistoryCookie = document.cookie.replace(/(?:(?:^|.*;\s*)chatHistory\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+        if (chatHistoryCookie) {
+            chatHistory = JSON.parse(chatHistoryCookie);
+        }
+
+        for (var i = 0; i < chatHistory.length; i++) {
+            appendChatItem(chatHistory[i].message, chatHistory[i].response);
+        }
     }
     </script>
 </body>
