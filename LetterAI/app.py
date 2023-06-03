@@ -16,8 +16,6 @@ def get_page_content():
 
     if data['page_id'] == 'home-menu':
         content = render_template('home.html')
-    elif data['page_id'] == 'info-menu':
-        content = render_template('info.html')
     elif data['page_id'] == 'settings-menu':
         content = render_template('settings.html')
     else:
